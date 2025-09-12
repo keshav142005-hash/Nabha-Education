@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard with Profile & Search</title>
+  <link rel="stylesheet" href="style.css">
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       /* background: #f4f7fc; */
-      background: url("bg3.jpg") no-repeat center center fixed;
+      background: url("bg10.jpg") no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -224,6 +225,13 @@
   <!-- Search Results -->
   <div id="search-results" class="results" style="display:none; padding: 20px;"></div>
 
+  <!-- Figure ke niche -->
+   <header>
+<section class="college-section">
+  <h2>Top Colleges</h2>
+  <div id="collegeList" class="college-list"></div>
+</section>
+</header>
   <script>
     const subjects = [
       "MBA", "Engineering", "Medical", "Design", "Law",
@@ -258,6 +266,25 @@
     const searchInput = document.getElementById("searchInput");
     const suggestionsBox = document.getElementById("suggestionsBox");
     const resultsDiv = document.getElementById("search-results");
+
+    // JSON file se colleges ka data load karo
+fetch('colleges.json')
+  .then(response => response.json())
+  .then(data => {
+    const collegeListDiv = document.getElementById('collegeList');
+
+    data.forEach(college => {
+      const collegeDiv = document.createElement('div');
+      collegeDiv.classList.add('college-item');
+      collegeDiv.innerText = college.name;
+
+      // Jab click kare toh official website open ho
+      collegeDiv.onclick = () => window.open(college.link, '_blank');
+
+      collegeListDiv.appendChild(collegeDiv);
+    });
+  })
+  .catch(error => console.error('Error loading colleges:', error));
 
     // ✅ Search Suggestions
     function suggest(query) {

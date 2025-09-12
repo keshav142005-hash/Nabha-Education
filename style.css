@@ -1,0 +1,37 @@
+/* College section style */
+.college-section {
+  padding: 30px;
+  text-align: center;
+  background: linear-gradient(135deg, #004080, #0099cc); /* Dark Blue → Light Blue */
+  color: white; /* Text ko white kar diya */
+  margin-top: 400px;
+}
+.college-section h2 {
+  font-size: 28px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.college-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.college-item {
+  background: #004080;  /* Dark Blue background */
+  color: white;         /* Text white */
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: 0.3s;
+  cursor: pointer;
+  font-weight: bold;
+  min-width: 200px;
+}
+
+.college-item:hover {
+  background: #0073e6; /* Hover par thoda lighter blue */
+  transform: scale(1.05);
+}
