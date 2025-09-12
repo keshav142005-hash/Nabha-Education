@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login/Register</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url("img2.png") no-repeat center center/cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 15px;
+      width: 350px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+    .card h1 { text-align: center; margin-bottom: 20px; }
+    .input-field {
+      width: 100%; padding: 12px; margin: 10px 0;
+      border: 1px solid #ccc; border-radius: 8px; font-size: 14px;
+    }
+    .btn {
+      width: 100%; padding: 12px;
+      background: #4CAF50; border: none; border-radius: 8px;
+      color: white; font-size: 16px; cursor: pointer; margin-top: 10px;
+    }
+    .btn:hover { background: #45a049; }
+    .switch { text-align: center; margin-top: 15px; }
+    .switch button {
+      background: none; border: none; color: #007bff;
+      font-size: 14px; cursor: pointer;
+    }
+    #role { width: 100%; padding: 12px; border-radius: 8px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1 id="form-title">Register</h1>
+    <form id="auth-form">
+      <input type="text" id="name" class="input-field" placeholder="Full Name" required>
+      <input type="email" id="email" class="input-field" placeholder="Email" required>
+      <input type="password" id="password" class="input-field" placeholder="Password" required>
+
+      <!-- ✅ Role Selection -->
+      <select id="role" class="input-field">
+        <option value="student">Student</option>
+        <option value="teacher">Teacher</option>
+      </select>
+
+      <button type="submit" class="btn" id="submit-btn">Register</button>
+    </form>
+
+    <div class="switch">
+      <span id="toggle-text">Already have an account?</span>
+      <button type="button" onclick="toggleForm()">Login</button>
+    </div>
+  </div>
+
+  <script>
+    let isLogin = false;
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("form-title").innerText = isLogin ? "Login" : "Register";
+      document.getElementById("submit-btn").innerText = isLogin ? "Login" : "Register";
+      document.getElementById("toggle-text").innerText = isLogin ? "Don't have an account?" : "Already have an account?";
+      document.getElementById("name").style.display = isLogin ? "none" : "block";
+      document.getElementById("role").style.display = isLogin ? "none" : "block";
+    }
+
+    document.getElementById("auth-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value.trim();
+      let name = document.getElementById("name").value.trim();
+      let role = document.getElementById("role").value;
+
+      let users = JSON.parse(localStorage.getItem("users")) || [];
+
+   if (isLogin) {
+  let user = users.find(u => u.email === email && u.password === password);
+  if (user) {
+    localStorage.setItem("currentUser", JSON.stringify(user));
+    window.location.href = "roleSelect.html";   // ✅ अब role select page खुलेगा
+  } else {
+    alert("Invalid email or password!");
+  }
+} else {
+  let newUser = { name, email, password, role, dob: "", phone: "", language: "", address: "", photo: "" };
+  users.push(newUser);
+  localStorage.setItem("users", JSON.stringify(users));
+  alert("Registered successfully! Please login now.");
+  toggleForm(); // switch to login
+}
+      }
+    );
+  </script>
+</body>
+</html>

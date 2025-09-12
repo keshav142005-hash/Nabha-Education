@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+    }
+    #resultBox {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #0066cc;
+    }
+    a:hover {
+      color: #ff6600;
+    }
+  </style>
+</head>
+<body>
+  <h2>College Search Demo</h2>
+
+  <div id="resultBox"></div>
+
+  <script>
+    // 👇 College list with websites (tum yaha URLs dal doge)
+    const colleges = {
+      "Kundan Vidya Mandir,Ludhiana": "https://kvmschool.edu.in/",
+      "Oakridge International School,Mohali": "https://oakridge.in/mohali",
+      "Dasmesh Public School,Faridkot": "https://dasmeshschoolfaridkot.com",
+      "Delhi Public School,Ludhiana": "https://www.dpsludhiana.com",
+      "Yadavindra Public School,Patiala": "https://ypspatiala.in",
+      "Swami Sant Dass Public School,Phagwara": "https://ssdpublicschool.org",
+      "Scared Heart School,Moga": "https://sacredheartmoga.com",
+      "Army Public School,Jalandhar": "https://apsjalandhar.com",
+      "St. Joseph's Convent School,Amritsar": "https://sjcsamritsar.org",
+      "Aryabhatta International School,Barnala": "https://aryabhatta.edu.in",
+      "Gagan International School,Gurudaspur": "#",
+      "Seaba International School,Lehra Gaga": "#",
+      "British International School,Nabha Road": "#",
+      "Little Flower Convent School,Rupnagar": "#",
+      "St. Soldier International School,Jalandhar": "#",
+      "Bhai Gurdas International School,Chandigarh": "#"
+    };
+
+    // 👇 Example: Search result
+    let searchCollege = "Kundan Vidya Mandir,Ludhiana"; // tumhare search box se aayega
+    let resultBox = document.getElementById("resultBox");
+
+    if (colleges[searchCollege]) {
+      // Agar website mili toh link bana do
+      resultBox.innerHTML = `
+        Showing results for 
+        <a href="${colleges[searchCollege]}" target="_blank">
+          "${searchCollege}"
+        </a>
+      `;
+    } else {
+      // Agar URL nahi mila toh sirf naam dikhao
+      resultBox.innerHTML = 'No website found for "${searchCollege}"';
+    }
+  </script>
+</body>
+</html>

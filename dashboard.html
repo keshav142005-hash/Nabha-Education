@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard with Profile & Search</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      /* background: #f4f7fc; */
+      background: url("bg3.jpg") no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: #004080;
+      padding: 15px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    /* Search Bar */
+    .search-bar {
+      position: relative;
+      flex: 0 0 50%;
+      margin: 0 20px;
+      display: flex;
+    }
+
+    .search-bar input {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    .search-bar button {
+      margin-left: 5px;
+      padding: 10px 15px;
+      background: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Suggestions */
+    .suggestions {
+      position: absolute;
+      top: 42px;
+      background: white;
+      border: 1px solid #ccc;
+      width: calc(100% - 80px);
+      max-height: 200px;
+      overflow-y: auto;
+      display: none;
+      z-index: 10;
+      color: black;
+    }
+    .suggestions div {
+      padding: 8px;
+      cursor: pointer;
+    }
+    .suggestions div:hover {
+      background: #f0f0f0;
+    }
+
+    /* Profile Icon */
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      color: #004080;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    /* Profile Form */
+    .profile-form {
+      display: none;
+      max-width: 500px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .profile-form input,
+    .profile-form select {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .profile-form button {
+      background: #004080;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .profile-form button:hover {
+      background: #0066cc;
+    }
+
+    /* Profile Pic Preview */
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      margin: 10px auto;
+    }
+
+    /* ✅ Navbar Second Row */
+    .nav-links {
+      background: #0055aa;
+      display: flex;
+      justify-content: center;
+      gap: 200px;
+      padding: 12px 0;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #ffd700;
+    }
+
+    /* ✅ Search Result Item */
+    .result-item {
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .result-item:hover {
+      background: #f0f0f0;
+    }
+   
+</style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <h1 id="dashboardTitle">Dashboard</h1>
+
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Search Colleges or Subjects..." oninput="suggest(this.value)">
+      <button onclick="handleSearch()">Search</button>
+      <div class="suggestions" id="suggestionsBox"></div>
+    </div>
+
+    <!-- Profile Icon -->
+    <div class="profile-icon" onclick="toggleProfile()">👤</div>
+  </div>
+
+  <!-- ✅ Navbar Second Row -->
+  <div class="nav-links">
+    <a href="courses.html" target="_blank">🎓 Available Courses</a>
+    <a href="announcements.html" target="_blank">📢 Announcements</a>
+  </div>
+
+  <!-- Profile Form -->
+  <div id="profileForm" class="profile-form">
+    <h2>User Profile</h2>
+    <input type="text" id="fullName" placeholder="Full Name">
+    <input type="email" id="email" placeholder="Email Address">
+    <input type="date" id="dob" placeholder="Date of Birth">
+    <input type="tel" id="phone" placeholder="Phone Number">
+    <input type="text" id="address" placeholder="Address">
+
+    <select id="language">
+      <option>Select Language</option>
+      <option>Hindi</option>
+      <option>English</option>
+      <option>Bengali</option>
+      <option>Tamil</option>
+      <option>Telugu</option>
+      <option>Punjabi</option>
+      <option>Gujarati</option>
+      <option>Kannada</option>
+      <option>Malayalam</option>
+      <option>Marathi</option>
+    </select>
+
+    <input type="file" id="profilePicInput" accept="image/*" onchange="previewPic(event)">
+    <img id="profilePic" class="profile-pic" src="" alt="Profile Picture">
+
+    <button onclick="saveProfile()">Save Profile</button>
+  </div>
+
+  <!-- Search Results -->
+  <div id="search-results" class="results" style="display:none; padding: 20px;"></div>
+
+  <script>
+    const subjects = [
+      "MBA", "Engineering", "Medical", "Design", "Law",
+      "Computer Science", "Mathematics", "Pharmacy", "Arts", "Commerce","Kundan Vidya Mandir,Ludhiana","Oakridge International School,Mohali","Dasmesh Public School,Faridkot",
+      "Delhi Public School,Ludhiana","Yadavindra Public School,Patiala","Swami Sant Dass Public School,Phagwara",
+      "Scared Heart School,Moga", "Army Public School,Jalandhar","St. Joseph's Convent School,Amritsar",
+      "Aryabhatta International School,Barnala","Gagan International School,Gurudaspur","Seaba International School,Lehra Gaga","British International School,Nabha Road",
+      "Little Flower Convent School,Rupnagar","St. Soldier International School,Jalandhar","Bhai Gurdas International School,Chandigarh",
+    ];
+    // Map of colleges and their websites
+   const colleges = {
+  "Kundan Vidya Mandir,Ludhiana": "https://kvmschool.edu.in/",
+  "Oakridge International School,Mohali": "https://www.oakridge.in/mohali/",
+  "Dasmesh Public School,Faridkot": "https://dasmeshschoolfdk.com/",
+  "Delhi Public School,Ludhiana": "https://dpsludhiana.com/",
+  "Yadavindra Public School,Patiala": "https://ypspatiala.in/",
+  "Swami Sant Dass Public School,Phagwara": "https://www.ssdpsphg.com/",
+  "Scared Heart School,Moga": "https://shsmoga.com/",
+  "Army Public School,Jalandhar": "https://apsjalandhar.com/",
+  "St. Joseph's Convent School,Amritsar": "https://stjosephkhasa.in/",
+  "Aryabhatta International School,Barnala": "https://aryabhatta.edu.in/",
+  "Gagan International School,Gurudaspur": "https://schools.org.in/gurdaspur/03010114812/gagan-international-school-purana-shalla.html",
+  "Seaba International School,Lehra Gaga": "https://seabamission.com/",
+  "British International School,Nabha Road": "https://targetstudy.com/school/13048/british-international-school/",
+  "Little Flower Convent School,Dinanagar": "https://lfcsdnr.com/",
+  "St. Soldier International School,Jalandhar": "https://ssdpsjalandhar.in/",
+  "Bhai Gurdas International School,Chandigarh": "https://school.careers360.com/schools/gs-international-public-school-bhagwanpur-gurdaspur"
+  // baki schools ke bhi link yahan dal dena
+};
+    
+
+    const searchInput = document.getElementById("searchInput");
+    const suggestionsBox = document.getElementById("suggestionsBox");
+    const resultsDiv = document.getElementById("search-results");
+
+    // ✅ Search Suggestions
+    function suggest(query) {
+      suggestionsBox.innerHTML = "";
+      if (!query) {
+        suggestionsBox.style.display = "none";
+        return;
+      }
+      let items = subjects.filter(sub => sub.toLowerCase().includes(query.toLowerCase()));
+      if (items.length > 0) {
+        suggestionsBox.style.display = "block";
+        suggestionsBox.innerHTML = items.map(item =>
+          `<div onclick="selectSuggestion('${item}')">${item}</div>`
+        ).join("");
+      } else {
+        suggestionsBox.style.display = "none";
+      }
+    }
+
+    function selectSuggestion(value) {
+      searchInput.value = value;
+      suggestionsBox.style.display = "none";
+      handleSearch();
+    }
+
+    function handleSearch() {
+      const query = searchInput.value.trim();
+      if (query) {
+        document.getElementById("dashboardTitle").style.display = "none";
+        suggestionsBox.style.display = "none";
+        performSearch(query);
+      }
+    }
+
+    function performSearch(query) {
+  resultsDiv.style.display = "block";
+  if (colleges[query]) {
+    // Agar college ke naam ka link mile
+    resultsDiv.innerHTML = `<div class="result-item" onclick="window.open('${colleges[query]}', '_blank')">
+      Showing results for "<strong>${query}</strong>"
+    </div>`;
+  } else {
+    // Agar sirf subject ho (jaise MBA, Engineering, etc.)
+    resultsDiv.innerHTML = `<div class="result-item">
+      Showing results for "<strong>${query}</strong>"
+    </div>`;
+  }
+}
+
+    // ✅ Toggle Profile Form
+    function toggleProfile() {
+      const form = document.getElementById("profileForm");
+      form.style.display = form.style.display === "block" ? "none" : "block";
+    }
+
+    function previewPic(event) {
+      const output = document.getElementById("profilePic");
+      output.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function saveProfile() {
+      alert("✅ Profile saved successfully!");
+    }
+  </script>
+</body>
+</html>

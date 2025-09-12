@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f6fc; }
+    header { background: #004080; color: white; padding: 15px; text-align: center; }
+    nav { display: flex; justify-content: center; gap: 20px; background: #003366; padding: 10px; }
+    nav button { background: white; color: #003366; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; }
+    nav button:hover { background: #ddd; }
+    section { padding: 20px; display: none; }
+    .active { display: block; }
+    .card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 15px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+    input, textarea, select { width: 100%; padding: 10px; margin: 8px 0; border-radius: 6px; border: 1px solid #ccc; }
+    button.save-btn { background: #004080; color: white; padding: 10px; border: none; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+    button.save-btn:hover { background: #0066cc; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>👩‍🏫 Teacher Dashboard</h1>
+</header>
+
+<nav>
+  <button onclick="showSection('progress')">📊 Student Progress</button>
+  <button onclick="showSection('quiz')">📝 Create Quiz</button>
+  <button onclick="showSection('assignment')">📂 Create Assignment</button>
+  <button onclick="showSection('announcement')">🔔 Announcements</button>
+</nav>
+
+<section id="progress" class="active">
+  <h2>📊 Student Progress Tracker</h2>
+  <div id="progressList"></div>
+</section>
+
+<section id="quiz">
+  <h2>📝 Create Quiz</h2>
+  <div class="card">
+    <label>Question:</label>
+    <input type="text" id="qText">
+    <label>Options:</label>
+    <input type="text" id="opt1" placeholder="Option 1">
+    <input type="text" id="opt2" placeholder="Option 2">
+    <input type="text" id="opt3" placeholder="Option 3">
+    <input type="text" id="opt4" placeholder="Option 4">
+    <label>Correct Answer:</label>
+    <select id="correct">
+      <option>Option 1</option>
+      <option>Option 2</option>
+      <option>Option 3</option>
+      <option>Option 4</option>
+    </select>
+    <button class="save-btn" onclick="saveQuiz()">Save Quiz</button>
+  </div>
+</section>
+
+<section id="assignment">
+  <h2>📂 Create Assignment</h2>
+  <div class="card">
+    <label>Title:</label>
+    <input type="text" id="assignTitle">
+    <label>Description:</label>
+    <textarea id="assignDesc"></textarea>
+    <label>Deadline:</label>
+    <input type="date" id="assignDeadline">
+    <button class="save-btn" onclick="saveAssignment()">Save Assignment</button>
+  </div>
+</section>
+
+<section id="announcement">
+  <h2>🔔 Announcements</h2>
+  <div class="card">
+    <textarea id="noticeText" placeholder="Write announcement..."></textarea>
+    <button class="save-btn" onclick="saveNotice()">Post Announcement</button>
+  </div>
+</section>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    if (id === "progress") showProgress();
+  }
+
+  // ✅ Save Quiz into announcements[]
+  function saveQuiz() {
+    let quiz = {
+      type: "quiz",
+      question: document.getElementById("qText").value,
+      options: [
+        document.getElementById("opt1").value,
+        document.getElementById("opt2").value,
+        document.getElementById("opt3").value,
+        document.getElementById("opt4").value
+      ],
+      correct: document.getElementById("correct").value
+    };
+
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    announcements.push(quiz);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+
+    alert("✅ Quiz saved successfully!");
+    document.getElementById("qText").value = "";
+    document.getElementById("opt1").value = "";
+    document.getElementById("opt2").value = "";
+    document.getElementById("opt3").value = "";
+    document.getElementById("opt4").value = "";
+  }
+
+  // ✅ Save Assignment into announcements[]
+  function saveAssignment() {
+    let assignment = {
+      type: "assignment",
+      title: document.getElementById("assignTitle").value,
+      desc: document.getElementById("assignDesc").value,
+      deadline: document.getElementById("assignDeadline").value
+    };
+
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    announcements.push(assignment);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+
+    alert("✅ Assignment created!");
+    document.getElementById("assignTitle").value = "";
+    document.getElementById("assignDesc").value = "";
+    document.getElementById("assignDeadline").value = "";
+  }
+
+  // ✅ Save Announcement into announcements[]
+  function saveNotice() {
+    let announcement = {
+      type: "announcement",
+      text: document.getElementById("noticeText").value
+    };
+
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    announcements.push(announcement);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+
+    alert("📢 Announcement posted!");
+    document.getElementById("noticeText").value = "";
+  }
+
+  // ✅ Show Student Progress (from progress[])
+  function showProgress() {
+    let progress = JSON.parse(localStorage.getItem("progress")) || [];
+    let container = document.getElementById("progressList");
+    if (progress.length === 0) {
+      container.innerHTML = "<div class='card'>No progress yet!</div>";
+    } else {
+      container.innerHTML = progress.map(p => `
+        <div class="card"><b>${p.student}</b> answered <i>${p.question}</i> → ${p.result}</div>
+      `).join("");
+    }
+  }
+
+  window.onload = showProgress;
+</script>
+
+</body>
+</html>

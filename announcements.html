@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Announcements</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f7fc; margin: 0; padding: 0; }
+    header { background: #004080; color: white; padding: 15px; text-align: center; }
+    .container { padding: 20px; }
+    h2 { color: #004080; }
+    .card { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 3px 6px rgba(0,0,0,0.1); }
+    input, textarea, button { margin: 8px 0; padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 100%; }
+    button { background: #004080; color: white; border: none; cursor: pointer; }
+    button:hover { background: #0066cc; }
+    .quiz-option { display: block; margin: 5px 0; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>📢 Announcements, Quizzes & Assignments</h1>
+</header>
+
+<div class="container">
+
+  <!-- ✅ Teacher Create Section -->
+  <!-- <div class="card">
+    <h2>👩‍🏫 Teacher Actions</h2>
+
+    <h3>Create Announcement</h3>
+    <textarea id="noticeText" placeholder="Write announcement..."></textarea>
+    <button onclick="saveNotice()">Post Announcement</button>
+
+    <h3>Create Quiz</h3>
+    <input type="text" id="qText" placeholder="Question">
+    <input type="text" id="opt1" placeholder="Option 1">
+    <input type="text" id="opt2" placeholder="Option 2">
+    <input type="text" id="opt3" placeholder="Option 3">
+    <input type="text" id="opt4" placeholder="Option 4">
+    <select id="correct">
+      <option value="0">Option 1</option>
+      <option value="1">Option 2</option>
+      <option value="2">Option 3</option>
+      <option value="3">Option 4</option>
+    </select>
+    <button onclick="saveQuiz()">Save Quiz</button>
+
+    <h3>Create Assignment</h3>
+    <input type="text" id="assignTitle" placeholder="Assignment Title">
+    <textarea id="assignDesc" placeholder="Assignment Description"></textarea>
+    <input type="date" id="assignDeadline">
+    <button onclick="saveAssignment()">Save Assignment</button>
+  </div> -->
+
+  <!-- ✅ Student View Section -->
+  <div class="card">
+    <h2>👨‍🎓 Student Announcements</h2>
+    <div id="announcementsList"></div>
+  </div>
+
+  <div class="card">
+    <h2>📝 Student Quizzes</h2>
+    <div id="quizList"></div>
+  </div>
+
+  <div class="card">
+    <h2>📂 Student Assignments</h2>
+    <div id="assignmentList"></div>
+  </div>
+
+</div>
+
+<script>
+  // ✅ Save Announcement
+  function saveNotice() {
+    let announcement = document.getElementById("noticeText").value;
+    if (!announcement) return alert("Write something!");
+
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    announcements.push(announcement);
+    localStorage.setItem("announcements", JSON.stringify(announcements));
+    document.getElementById("noticeText").value = "";
+    loadAnnouncements();
+  }
+
+  function loadAnnouncements() {
+    let announcements = JSON.parse(localStorage.getItem("announcements")) || [];
+    document.getElementById("announcementsList").innerHTML =
+      announcements.map(a => `<div class="card">📢 ${a}</div>`).join("");
+  }
+
+  // ✅ Save Quiz
+  function saveQuiz() {
+    let quiz = {
+      question: document.getElementById("qText").value,
+      options: [
+        document.getElementById("opt1").value,
+        document.getElementById("opt2").value,
+        document.getElementById("opt3").value,
+        document.getElementById("opt4").value
+      ],
+      correct: document.getElementById("correct").value
+    };
+    if (!quiz.question) return alert("Enter question!");
+
+    let quizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+    quizzes.push(quiz);
+    localStorage.setItem("quizzes", JSON.stringify(quizzes));
+
+    document.getElementById("qText").value = "";
+    document.getElementById("opt1").value = "";
+    document.getElementById("opt2").value = "";
+    document.getElementById("opt3").value = "";
+    document.getElementById("opt4").value = "";
+    loadQuizzes();
+  }
+
+  function loadQuizzes() {
+    let quizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+    let container = document.getElementById("quizList");
+    container.innerHTML = quizzes.map((q, idx) => `
+      <div class="card">
+        <b>Q${idx+1}: ${q.question}</b><br>
+        ${q.options.map((opt, i) => 
+          `<label><input type="radio" name="quiz${idx}" value="${i}" class="quiz-option"> ${opt}</label>`
+        ).join("<br>")}
+        <button onclick="submitQuiz(${idx})">Submit Quiz</button>
+        <div id="quizResult${idx}"></div>
+      </div>
+    `).join("");
+  }
+
+  function submitQuiz(index) {
+    let selected = document.querySelector(`input[name="quiz${index}"]:checked`);
+    if (!selected) return alert("Please select an answer!");
+
+    let quizzes = JSON.parse(localStorage.getItem("quizzes")) || [];
+    let correct = quizzes[index].correct;
+    let resultBox = document.getElementById("quizResult"+index);
+
+    if (selected.value == correct) {
+      resultBox.innerHTML = "✅ Correct!";
+    } else {
+      resultBox.innerHTML = "❌ Wrong! Correct answer: " + quizzes[index].options[correct];
+    }
+
+    // Store progress for teacher
+    let progress = JSON.parse(localStorage.getItem("progress")) || [];
+    progress.push({ student:"Student1", question: quizzes[index].question, result: resultBox.innerText });
+    localStorage.setItem("progress", JSON.stringify(progress));
+  }
+
+  // ✅ Save Assignment
+  function saveAssignment() {
+    let assignment = {
+      title: document.getElementById("assignTitle").value,
+      desc: document.getElementById("assignDesc").value,
+      deadline: document.getElementById("assignDeadline").value
+    };
+    if (!assignment.title) return alert("Enter assignment title!");
+
+    let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+    assignments.push(assignment);
+    localStorage.setItem("assignments", JSON.stringify(assignments));
+
+    document.getElementById("assignTitle").value = "";
+    document.getElementById("assignDesc").value = "";
+    document.getElementById("assignDeadline").value = "";
+    loadAssignments();
+  }
+
+  function loadAssignments() {
+    let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+    let container = document.getElementById("assignmentList");
+    container.innerHTML = assignments.map((a, idx) => `
+      <div class="card">
+        <b>${a.title}</b><br>
+        ${a.desc}<br>
+        Deadline: ${a.deadline}<br>
+        <textarea id="submit${idx}" placeholder="Write your answer..."></textarea>
+        <button onclick="submitAssignment(${idx})">Submit Assignment</button>
+        <div id="assignResult${idx}"></div>
+      </div>
+    `).join("");
+  }
+
+  function submitAssignment(index) {
+    let answer = document.getElementById("submit"+index).value;
+    if (!answer) return alert("Please write your answer!");
+
+    document.getElementById("assignResult"+index).innerHTML = "✅ Assignment Submitted!";
+    
+    // Save in progress
+    let assignments = JSON.parse(localStorage.getItem("assignments")) || [];
+    let progress = JSON.parse(localStorage.getItem("progress")) || [];
+    progress.push({ student:"Student1", question: "Assignment: "+assignments[index].title, result: "Submitted" });
+    localStorage.setItem("progress", JSON.stringify(progress));
+  }
+
+  // ✅ Load all when page opens
+  window.onload = function() {
+    loadAnnouncements();
+    loadQuizzes();
+    loadAssignments();
+  }
+</script>
+</body>
+</html>

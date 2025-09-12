@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class-wise Courses</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f7fc; margin: 0; padding: 20px; }
+    h1 { text-align: center; color: #004080; }
+    .grid-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 30px; }
+    .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); cursor: pointer; transition: transform 0.2s ease; }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { margin: 0 0 10px; color: #004080; }
+    .card p { color: #444; font-size: 14px; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000; }
+    .modal-content { background: white; padding: 20px; border-radius: 10px; width: 80%; max-width: 800px; max-height: 80%; overflow-y: auto; }
+    .modal h2 { margin-top: 0; color: #004080; }
+    .item { background: #f0f4ff; margin: 10px 0; padding: 12px; border-radius: 8px; }
+    iframe { border-radius: 8px; margin-top: 8px; }
+    .close-btn { float: right; background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>📚 Select Your Class</h1>  
+
+  <!-- Classes -->
+  <div class="grid-container">
+    <div class="card" onclick="openClass('Class 1')"><h3>Class 1</h3><p>Subjects for beginners.</p></div>
+    <div class="card" onclick="openClass('Class 2')"><h3>Class 2</h3><p>Subjects for Class 2 students.</p></div>
+    <div class="card" onclick="openClass('Class 3')"><h3>Class 3</h3><p>Subjects for Class 3 students.</p></div>
+    <div class="card" onclick="openClass('Class 4')"><h3>Class 4</h3><p>Subjects for Class 4 students.</p></div>
+    <div class="card" onclick="openClass('Class 5')"><h3>Class 5</h3><p>Subjects for Class 5 students.</p></div>
+    <div class="card" onclick="openClass('Class 6')"><h3>Class 6</h3><p>Subjects for Class 6 students.</p></div>
+    <div class="card" onclick="openClass('Class 7')"><h3>Class 7</h3><p>Subjects for Class 7 students.</p></div>
+    <div class="card" onclick="openClass('Class 8')"><h3>Class 8</h3><p>Subjects for Class 8 students.</p></div>
+    <div class="card" onclick="openClass('Class 9')"><h3>Class 9</h3><p>Subjects for Class 9 students.</p></div>
+    <div class="card" onclick="openClass('Class 10')"><h3>Class 10</h3><p>Subjects for Class 10 students.</p></div>
+    <div class="card" onclick="openClass('Class 11')"><h3>Class 11</h3><p>Streams for senior secondary.</p></div>
+    <div class="card" onclick="openClass('Class 12')"><h3>Class 12</h3><p>Streams for senior secondary.</p></div>
+    <div class="card" onclick="openClass('Digital Education')"><h3>💻 Digital Education</h3><p>Learn computer basics and digital skills.</p></div>
+  </div>
+
+  <!-- Modal -->
+  <div id="mainModal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeModal()">X</button>
+      <h2 id="modalTitle"></h2>
+      <div id="modalList"></div>
+    </div>
+  </div> 
+
+  <script>
+    // ✅ Sample structure: Fill links later
+    const data = {
+      "Class 1": {
+        "Maths": [
+          { title: "Counting 1–50", type: "video", link: "https://youtu.be/LvvFW4u8hsQ?feature=shared" },
+          { title: "Shapes & Colors", type: "video", link: "https://youtu.be/0MfwZHSO9lA?feature=shared" },
+          { title: "Addition Basics", type: "video", link: "https://youtu.be/mjlsSYLLOSE?feature=shared" },
+          { title: "Subtraction Basics", type: "video", link: "https://youtu.be/lBfj-pm5kqc?feature=shared" },
+          { title: "Number in Words", type: "video", link: "https://youtu.be/KK6aKpoy7Nw?feature=shared" }
+        ],
+        "English": [
+          { title: "Alphabet A–Z", type: "video", link: "https://youtu.be/cbtasmrtxA4?feature=shared" },
+          { title: "Simple Words", type: "video", link: "https://youtu.be/NkM_g3tk7bg?feature=shared" },
+          { title: "My Family", type: "video", link: "https://youtu.be/9mFHFcQ--xs?si=5Pq_F95fGM6xc1tI" },
+          { title: "Fruits and Vegetables", type: "video", link: "https://youtu.be/mUqwKequriw?feature=shared" },
+            { title: "Animals Around Us", type: "video", link: "https://youtu.be/EvQ7QhBD3k4?feature=shared" }
+        ],
+        "Hindi": [
+          { title: "Swar", type: "video", link: "https://youtu.be/UN5LirH82qE?si=6xRZxllGsuptTPDF" },
+          { title: "Vyanjan", type: "video", link: "https://youtu.be/Yvb3we9HMFo?feature=shared" },
+          { title: "Phal ke Naam", type: "video", link: "https://youtu.be/LFLgELuLp7k?feature=shared" },
+          { title: "Pashu Pakshi", type: "video", link: "https://youtu.be/JhrKsZ3KQzw?feature=shared" },
+          { title: "Meri Kaksha", type: "video", link: "https://youtu.be/UN5LirH82qE?si=6xRZxllGsuptTPDF" }
+        ],
+          "Punjabi": [
+          { title: "punjabi alphabets", type: "video", link: "https://youtu.be/QAyzrnsJCuI?feature=shared" },
+          { title: "about family", type: "video", link: "https://youtu.be/jeOf3U99ejo?si=B_sP3lf8A-Fe8mGY" },
+          { title: "fruits and vegetables", type: "video", link: "https://youtu.be/9oJ87V5PEJA?feature=shared" },
+          { title: "birds", type: "video", link: "https://youtu.be/poKPUJCjuNk?feature=shared" },
+          { title: "festival in punjab", type: "video", link: "https://youtube.com/shorts/Wbtr6ka95wg?si=SJj5lxp80Dri3ccC" }
+        ]
+      },
+      "Class 2": {
+      "Maths": [
+          { title: "shapes and patterns", type: "video", link: "https://youtu.be/RxFE2eluTM8?feature=shared" },
+          { title: "Addition & Subtraction", type: "video", link: "https://youtu.be/1jCqMKdBE5c?feature=shared" },
+          { title: "Multiplication Basics", type: "video", link: "https://youtu.be/JkwKbirOeWk?si=lfgEPIGpHM77ahbG" },
+          { title: "Division Basics", type: "video", link: "https://youtu.be/le_OE27ysuU?feature=shared" },
+          { title: "Measurement", type: "video", link: "https://youtu.be/TSQXUrioX04?si=OlhBAyWtjPLwTnGX" }
+        ],
+
+         "English": [
+          { title: "i am lucky", type: "video", link: "https://youtu.be/L9DWLMkbjCg?feature=shared" },
+          { title: "the wind and the sun", type: "video", link: "https://youtu.be/u21-bqp1SDc?feature=shared" },
+          { title: "Story Reading", type: "video", link: "https://youtu.be/QUTYxwTsbiM?feature=shared" },
+          { title: "Grammar Basics", type: "video", link: "https://youtu.be/0swNkwWv9Rg?si=5Yxwb-H8MlXapmVF" },
+          { title: "writting portions", type: "video", link: "https://youtu.be/s7Uy5SE1K2c?feature=shared" }
+        ],
+
+          "Hindi": [
+          { title: "Childhood", type: "video", link: "https://youtu.be/6HEKkgS-G0k?feature=shared" },
+          { title: "My book", type: "video", link: "https://youtu.be/MsbEkt4oajk?feature=shared" },
+          { title: "Swan and the snake", type: "video", link: "https://youtu.be/lEBfMt0BqvY?feature=shared" },
+          { title: "The story of the spider", type: "video", link: "https://youtu.be/ySps7EZrrH0?si=a_c-tQUyBxKGWdtA" },
+          { title: "Mausam", type: "video", link: "https://youtu.be/gpqwNdvjDiw?feature=shared" }
+        ],
+
+          "EVS": [
+          { title: "plant around us", type: "video", link: "https://youtu.be/3v-3e6kAG1w?feature=shared" },
+          { title: "transport", type: "video", link: "https://youtu.be/n7WhvlmbwWU?feature=shared" },
+          { title: "air ,water and weather", type: "video", link: "https://youtu.be/9asOLM7JwvI?feature=shared" },
+          { title: "animal around us", type: "video", link: "https://youtu.be/BaRlHoxZM00?feature=shared" },
+          { title: "food we eat", type: "video", link: "https://youtu.be/cm8WUAN_5fk?feature=shared" }
+        ]
+      },
+
+       "Class 3": {
+        "Maths": [
+          { title: "place value", type: "video", link: "https://youtu.be/28doFUBnvOw?feature=shared" },
+          { title: "multiplication tables", type: "video", link: "https://youtu.be/kic7woJC9_E?feature=shared" },
+          { title: "division", type: "video", link: "https://youtu.be/c_RKiSjgAOc?si=N7CULapHFm327soa" },
+          { title: "fraction", type: "video", link: "https://youtu.be/1xQDjpnBNjI?feature=shared" },
+          { title: "data handling", type: "video", link: "https://youtu.be/WEiwsAWmBp4?si=4hlByERoHrOsal1X" }
+        ],
+        "English": [
+          { title: "the little rabbit", type: "video", link: "https://youtu.be/00-GnYrxLM8?si=hnWJgzH7_GmKPPiX" },
+          { title: "the tiny teacher", type: "video", link: "https://youtu.be/gJSL0QvAt40?si=uggvAXNIJR008goY" },
+          { title: "tospy-turvy", type: "video", link: "https://youtu.be/hrCSVxwlH78?feature=shared" },
+          { title: "how the dog found himself a new master", type: "video", link: "https://youtu.be/r1J0sU35oXg?si=wggZ1ZK47PCXcEHD" },
+          { title: "the banyan tree", type: "video", link: "https://youtu.be/AhOtlnygtGE?si=_C5mIPv5PRVrkBNv" }
+        ],
+        "Hindi": [
+          { title: "story of two friends", type: "video", link: "https://youtu.be/iAKq7iky_1I?feature=shared" },
+          { title: "A little bird", type: "video", link: "https://youtu.be/rsDWdaaZX9s?feature=shared" },
+          { title: "A clever Fox", type: "video", link: "https://youtu.be/rsDWdaaZX9s?feature=shared" },
+          { title: "Chhutti ke Din", type: "video", link: "https://youtu.be/KjqEaG9IYuU?si=bjM_nq39DnIitkJ-"},
+          { title: "who Where", type: "video", link: "https://youtu.be/o0vNyMKM4_A?si=ZN28FzZlXRXsSvKk" }
+        ],
+        "EVS": [
+          { title: "Our Helpers", type: "video", link: "https://youtu.be/vO4PBTqcLPk?feature=shared" },
+          { title: "Safety Rules", type: "video", link: "https://youtu.be/Rt1h0jcXgGA?feature=shared" },
+          { title: "Means of Communication", type: "video", link: "https://youtu.be/bMR4nDoXwSk?feature=shared" },
+          { title: "Our Environment", type: "video", link: "https://youtu.be/mUzXsIILmEg?feature=shared" },
+          { title: "Places of Worship", type: "video", link: "https://youtu.be/xa0K-HgdiUk?feature=shared" }
+        ]
+      },
+      "Class 4": {
+        "Maths": [
+          { title: "Large Number & Place Values", type: "video", link: "https://youtu.be/1vtGdP5qIlE?feature=shared" },
+          { title: "Decimal", type: "video", link: "https://youtu.be/xVSylTWxH6Q?si=040ZmBjtm6qJXfFo" },
+          { title: "Time and Calender", type: "video", link: "https://youtu.be/_oQB0ZDDHTA?feature=shared" },
+          { title: "Money", type: "video", link: "https://youtu.be/_YSAZo5hutw?feature=shared" },
+          { title: "Shapes & Geometry", type: "video", link: "https://youtu.be/A97pXwUnUCs?si=wJmupFXuNp9eGp3Y" }
+        ],
+        "English": [
+          { title: "The Treasure of Pirates", type: "video", link: "https://youtu.be/hPVY8ZjQ-0M?si=DOXln9JuNL5Bj3mo" },
+          { title: "The Little BUlly", type: "video", link: "https://youtu.be/WG3EYz4heks?si=9X4eLTAXPPt2A2L0" },
+          { title: "The Enchanted Tree", type: "video", link: "https://youtu.be/HDdc8Ji_0i0?si=1gk3kdIS5R75xM-6" },
+          { title: "The Squirrel and Crow", type: "video", link: "https://youtube.com/shorts/ZevFi9Z5I_E?si=YR9V-EZJUrcPIN06" },
+          { title: "Be Good , Be Happy", type: "video", link: "https://youtu.be/E4Rae18ysqc?si=2K964dNHI0blVCGD" }
+        ],
+        "Hindi": [
+          { title: "Importance of Truth", type: "video", link: "https://youtu.be/H8nAkvBrqtM?feature=shared" },
+          { title: "My Beloved Book", type: "video", link: "https://youtu.be/IuzRubSlOYo?si=gGO8LkUJGQC1v8GO" },
+          { title: "Friendship and Cooperation", type: "video", link: "https://youtu.be/nBMPaka5MfM?feature=shared" },
+          { title: "The animal at my home", type: "video", link: "https://youtu.be/BUnQO6aPMn8?feature=shared" },
+          { title: "Seasonal fruit and vegetable", type: "video", link: "https://youtu.be/bcNvkqxEd3Y?si=VRKuQpR-V2MNzPx8" }
+        ],
+        "EVS": [
+          { title: "Festival and Celebration", type: "video", link: "https://youtu.be/49hFcIRXYx0?si=maetJt08WZsZpRuA" },
+          { title: "Waste Management", type: "video", link: "https://youtu.be/Gboh2yaAinM?si=E-k_QcFhB9IvuMA4" },
+          { title: "Plant and Animal Interdependence", type: "video", link: "https://youtu.be/pSvlG2y7-nY?feature=shared" },
+          { title: "Earth and Sky", type: "video", link: "https://youtu.be/1RMdPRrm0G4?feature=shared" },
+          { title: "Natural Resources", type: "video", link: "https://youtu.be/wOoPOCZqtJ8?si=CrzdIucJgOMPyqqaearth" }
+        ]
+      },
+
+
+      "Class 5": {
+        "Maths": [
+          { title: "Number System Basics", type: "video", link: "https://youtu.be/Ts5nn5EQKF4?feature=shared" },
+          { title: "Patterns & Puzzles", type: "video", link: "https://youtu.be/kk0m0Z-8cJM?feature=shared" },
+          { title: "Perimeter & Area", type: "video", link: "https://youtu.be/NwO363dyeOg?feature=shared" },
+          { title: "Geometry", type: "video", link: "https://youtu.be/cXSN5i3ujyU?si=NJV_pA5d0ji1ezjV" },
+          { title: "Simple Word Problems", type: "video", link: "https://youtu.be/KgZ-GbtCLu0?feature=shared" }
+        ],
+
+         "Science": [
+          { title: "Food & Nutrition", type: "video", link: "https://youtu.be/7FJKxHcITEI?feature=shared" },
+          { title: "Plants", type: "video", link: "https://youtu.be/ro8Z9qIlWjM?feature=shared" },
+          { title: "Animals", type: "video", link: "https://youtu.be/-gyykaG-A7U?si=jLlnmibAiQJsGOtJ" },
+          { title: "Water", type: "video", link: "https://youtu.be/qHykTrjcbWg?feature=shared" },
+          { title: "Our Environment", type: "video", link: "https://youtu.be/t13L23RuZvc?feature=shared" }
+        ],
+         "English": [
+          { title: "Daffodils", type: "video", link: "https://youtu.be/-USMTxbAHoE?feature=shared" },
+          { title: "Story of Akbar and Birbal", type: "video", link: "https://youtu.be/l7oPOJxPBwg?si=5nGa3I7x0rTB6JlC" },
+          { title: "A letter to God", type: "video", link: "https://youtu.be/HfcNnRIqRBg?feature=shared" },
+          { title: "A House , A Home", type: "video", link: "https://youtu.be/1VnST9LzAug?si=DZR7WxmjO6nYOUoV" },
+          { title: "Nelson Mandela: Long Walk to Freedom", type: "video", link: "https://youtu.be/CaH7fXxfC6o?si=4MvVuFDasdwJwNY5" }
+        ],
+           "Hindi": [
+          { title: "Cleanliness and Health", type: "video", link: "https://youtu.be/EAeoL-q0oxg?feature=shared" },
+          { title: "My Holidays", type: "video", link: "https://youtu.be/KfV8KnloQ4c?si=NoQ8qG1swMNxNlrE" },
+          { title: "Music and Dance", type: "video", link: "https://youtu.be/AxJHpLAPT-c?si=CcJ9ZwfCpSZI6bH4" },
+          { title: "Story of Neighbors", type: "video", link: "https://youtu.be/wNRg1qJFINE?si=pVDPb5p4-X8gK8s-" },
+          { title: "The story of Thristy Crow", type: "video", link: "https://youtu.be/YHpRyQH5dX8?feature=shared" }
+        ],
+        "SST": [
+          { title: "A Glimpse of the Past", type: "video", link: "https://youtu.be/Lpmggv0x-dY?si=wm2glXrAgXdwCOS0" },
+          { title: "The Mauryan Empire", type: "video", link: "https://youtu.be/vWI1bCvqwds?si=Dhg-QmkbVJKvX5cW" },
+          { title: "The Gupta Period", type: "video", link: "https://youtu.be/dt74rNgCtrc?si=Ozg1-O5yYpKAN0bV" },
+          { title: "King and Kingdoms", type: "video", link: "https://youtu.be/MgqggQ5dMgI?si=ddXDYHQiObVDcnLs" },
+          { title: "From Harappa to Mahajanapadas", type: "video", link: "https://youtu.be/mIY8E3SDdmw?feature=shared" }
+        ]
+      },
+
+      "Class 6": {
+        "Maths": [
+          { title: "Fractions & Decimals", type: "video", link: "https://youtu.be/q8s2Ucy4bN0?si=qDNknyQlq4oaWqeV" },
+          { title: "Mensuration", type: "video", link: "https://youtu.be/lvSlbOLQM8g?si=aBxMYNpQxkvmas6K" },
+          { title: "Integers", type: "video", link: "https://youtu.be/fw1kyM0F00Y?si=qOWLT5BpT4y36Bh1" },
+          { title: "Algebra Basics", type: "video", link: "https://youtu.be/m0TtI2H5qpA?si=HP5tz5H3A8eFHb6U" },
+          { title: "Geometry", type: "video", link: "https://youtu.be/vgIj6lyLSK4?si=BA167qp-DFst0JvE" }
+        ],
+        "Science": [
+          { title: "Atoms & Molecules", type: "video", link: "https://youtu.be/hc0EtPPpZUU?feature=shared" },
+          { title: "Light", type: "video", link: "https://www.youtube.com/live/b72QTI6c4xo?feature=shared" },
+          { title: "Sound", type: "video", link: "https://youtu.be/-OCmnuzO0gI?feature=shared" },
+          { title: "Electricity", type: "video", link: "https://youtu.be/QewaGKDu4VE?feature=shared" },
+          { title: "Living Organisms", type: "video", link: "https://www.youtube.com/live/kcpeU1gQ_xI?feature=shared" }
+        ],
+        "English": [
+          { title: "Who Did Patrick's Homework", type: "video", link: "https://youtu.be/MOzJXWf-Yps?si=7aKZgqXUCl19S5XB" },
+          { title: "How The Dog Seved the children ", type: "video", link: "https://youtu.be/0NQ0TrAnXeg?si=xkgaNO60hlCYqPUB" },
+          { title: "Taro's RewarHow the Dog Saved the childrend", type: "video", link: "https://youtu.be/0ykifu88ngk?si=JJ57WtbV2V-F80ww" },
+          { title: "The Friendly Mongoose", type: "video", link: "https://youtu.be/q54_aUrAsxc?si=xWbrlMx2rk10ZYCm" },
+          { title: "Glenda", type: "video", link: "https://youtu.be/-eTM2yt25EY?si=LaYBoKXCpUr_L8K_" }
+        ],
+
+           "Hindi": [
+          { title: "Across the Road", type: "video", link: "https://youtube.com/playlist?list=PLFlGF75vbcnNK_JUxp2X-JPGItVydgQRV&si=SSHstq-PVCVEYUEs" },
+          { title: "The Hungry Lion", type: "video", link: "https://youtu.be/MUW1hn7wBgs?si=xTa9MadtdlGxBsvs" },
+          { title: "Beauty of Nature", type: "video", link: "https://youtu.be/pSQR9eZ4uYs?si=-lcZGl7oWxHEjt46" },
+          { title: "My Parents", type: "video", link: "https://youtu.be/IJaPamVpN_M?si=gu6oJ9-F7nUakVmN" },
+          { title: "My pet", type: "video", link: "https://youtu.be/86zBiNCEdRg?si=_W2cKYZg4yVC1phy" }
+        ],
+
+        "SST": [
+          { title: "Our Rights and Duties", type: "video", link: "https://youtu.be/i2j6bN7XuQc?si=nLzb1Ecr4xQhgtF2" },
+          { title: "Local Government", type: "video", link: "https://youtu.be/prF0WY2qlQA?si=2i3bG7oBnI1AHTDI" },
+          { title: "Our Festivals and Culture", type: "video", link: "https://youtu.be/3LMkIg8GAtM?feature=shared" },
+          { title: "Transport and Communication", type: "video", link: "https://youtu.be/R5oc4RXi-_8?si=uEKfSJwbHcUJ1ePb" },
+          { title: "People Who Help Us", type: "video", link: "https://youtu.be/PJ0k9irUSHI?si=2z1O-mgl4TAr_Ix_" }
+        ]
+      },
+     "Class 7": {
+        "Maths": [
+          { title: "Lines and Angles", type: "video", link: "https://youtu.be/pNYUzZRJJgU?si=lWDudT3RwwJ_iSnf" },
+          { title: "Exponents and Power", type: "video", link: "https://youtu.be/d2JbM1ySxnA?si=AWrJS9MK9acz1bX_" },
+          { title: "Probability", type: "video", link: "https://youtu.be/Ady9ApcQjzE?si=ezOuTa9F8edFencC" },
+          { title: "Algebra", type: "video", link: "https://youtu.be/0HR6jaJfKqg?si=XibS86YaVwkqAYd_" },
+          { title: "Circle", type: "video", link: "https://youtu.be/sp14MjK4MeU?si=5ZWWvieGT5yaN9j8" }
+        ],
+        "Science": [
+          { title: "Physical and Chemical Changes", type: "video", link: "https://youtu.be/mDNVgpCHMX8?si=lXN4q1aF_RUSZCU-" },
+          { title: "Nutrition in Animals", type: "video", link: "https://youtu.be/BYCyMMSiSmQ?si=p94v8pLTd0ZS0l5l" },
+          { title: "Nutrition in Plants", type: "video", link: "https://youtu.be/Kv0e5usW1w8?si=PLUSJj0hDf65c-9i" },
+          { title: "Reproductive System", type: "video", link: "https://youtu.be/JpxnOZPWO3Q?si=cL8EKYki4KrjQHgz" },
+          { title: "Refraction of Light", type: "video", link: "https://youtu.be/1CvvIsmaaYA?si=-PSo2XPbvmn5kpec" }
+        ],
+
+         "English": [
+          { title: "Story of Gopal and the Hilsa Fish", type: "video", link: "https://youtu.be/TP2N93HVBhg?si=YexZsQo73EfczkUL" },
+          { title: "The Ashes that made trees Bloom", type: "video", link: "https://youtu.be/9MF2vBSZ4fM?si=Vpli4JAS5VgnWXNQ" },
+          { title: "The Necklace", type: "video", link: "https://youtu.be/3WA0z0Bdvr8?si=fTKxB8f29TGv3nbK" },
+          { title: "The Last Leaf", type: "viedo", link: "https://youtu.be/a7FwA5XPFz8?si=RfvqpHgfPcZYBJAr" },
+          { title: "The Adventure of Toto", type: "video", link: "https://youtu.be/FeqHjrFUqCA?si=uQAOH6myosMqUqzH" }
+        ],
+
+        "Hindi": [
+          { title: "Mother, Tell a Story", type: "video", link: "https://youtu.be/h1dHzc3Bs-o?si=R_uIq1EC5RMhiXMZ" },
+          { title: "The Three Wise Man", type: "video", link: "https://youtu.be/hzcTrPkZBYk?si=yYoEmJMhIIUqs9zq" },
+          { title: "The Flower and The Thorn", type: "video", link: "https://youtu.be/L57lZqgJc_o?si=fG3SdMmuwUHQIE_1" },
+          { title: "The Verses of Meera", type: "video", link: "https://youtu.be/Wn0t4yVxDFc?si=TLkj69H6WX88QLJk"},
+          { title: "The Beauty of Rain", type: "video", link: "https://youtu.be/nWloziJ30j0?si=mVLaWsaLWgGfv0ii" }
+        ],
+       "SST": [
+          { title: "Natural Resources", type: "video", link: "https://youtu.be/cdKdnAU6a74?si=s9XVmeoE9-LjEGqM" },
+          { title: "Agriculture and Foods", type: "video", link: "https://youtu.be/AjiugzmRJm0?si=bdAVViwQccBmcIs5" },
+          { title: "Weather and Climate", type: "video", link: "https://youtu.be/Ek9pshmAmVU?si=xSo4VNdWdCqFuXJR" },
+          { title: "Major Landforms", type: "video", link: "https://youtu.be/OB9Bk1IHTF4?si=_oz8DUL7qZOUB3fQ" },
+          { title: "The Global and Maps", type: "video", link: "https://youtu.be/K5JOWZXfY5I?feature=shared" }
+        ]
+      },
+       "Class 8": {
+        "Maths": [
+          { title: "Factorisation of Algebraic Expression", type: "video", link: "https://youtu.be/nalxrV2EpnI?si=9Y_w3Eq1q6WK7dfN" },
+          { title: "Rational Numbers", type: "video", link: "https://youtu.be/877YmPOZxhU?si=VOrjKFkm6WT96lHC" },
+          { title: "Data Handling", type: "video", link: "https://youtu.be/01nxKH9PNIs?si=KIrMxqyH211OU57P" },
+          { title: "Congruences of Triangles", type: "video", link: "https://youtu.be/JchrIviEP-k?si=rGkqJIDmbkbd95_v" },
+          { title: "The Triangles and its properties", type: "video", link: "https://youtu.be/JchrIviEP-k?si=rGkqJIDmbkbd95_v" }
+        ],
+        "Science": [
+          { title: "Friction", type: "video", link: "https://www.youtube.com/live/4ygO9IonVKY?si=8cFW3lbli9OvvOGT" },
+          { title: "Some Natural Phenomena", type: "video", link: "https://www.youtube.com/live/USlcEAJ1qe0?si=hvnrC_QCzJ389xWF" },
+          { title: "Solid , Liquid and Gases", type: "video", link: "https://youtu.be/2ARA5EW2anc?si=lA7jaMp5o7O3cQKS" },
+          { title: "Chemical Effects of Electric Current ", type: "video", link: "https://www.youtube.com/live/hiWpiKNNMpM?si=SM1nJAy8cK8icHr3" },
+          { title: "The Universe", type: "video", link: "https://youtu.be/UR0qc6JM1uY?si=5-ObM1ccWF_alX74" }
+        ],
+        "English": [
+          { title: "The Patriot", type: "video", link: "https://youtu.be/5c6D3_aDchY?si=Vqadx8QVpUBbnxWK" },
+          { title: "The Happy Prince", type: "video", link: "https://youtu.be/X-XMI0uKX24?si=vDBLv7ocrW9iPvah" },
+          { title: "The Summit Within", type: "video", link: "https://youtu.be/ThTFzKZ2-mg?si=_Fo4Alq6ixsyo1tU" },
+          { title: "Three Question", type: "video", link: "https://youtu.be/wqsTeK1XYK8?si=H9Q9Hw-4JJdNdZgy" },
+          { title: "The Squirrel", type: "video", link: "https://youtu.be/omNicqD5VsE?si=oBMvG_Inxc6DMyj6" }
+        ],
+        "Hindi": [
+          { title: "A Bus Journey", type: "video", link: "https://youtu.be/i8hAAOhD3dQ?si=L7JJvqbo-CgAIelc" },
+          { title: "The Unique world of Letters", type: "video", link: "https://youtu.be/dt-QB5BxBsE?si=BlLtQyZ_Jx1mAi9M" },
+          { title: "Messengers of God", type: "video", link: "https://youtu.be/Nn56hwZfLD8?si=sEh7Wcy91I5AN536" },
+          { title: "The story of Sudama", type: "video", link: "https://youtu.be/D8XKdzlpThs?si=ImkgKUTo-Hg7IUe7" },
+          { title: "The Doll", type: "video", link: "https://youtu.be/uzqNTwwWrag?si=v_sfHUdDbOw1VjBK" }
+        ],
+        "SST": [
+          { title: "The Constitution", type: "video", link: "https://youtu.be/wgzUJJ4_YMQ?si=lz-Jp0L9pBRmrnbO" },
+          { title: "Understanding Secularism", type: "video", link: "https://youtu.be/ko4h8NYhETU?si=n9z6_wLRG1W50Ea0" },
+          { title: "Parliamentary Government", type: "video", link: "https://youtu.be/Tev8o9AMoc0?si=c4b42cer1B98bi0_" },
+          { title: "Judiciary", type: "video", link: "https://youtu.be/_WeoSgJZhXI?si=ymo_R3sKXoRrGbWY" },
+          { title: "Law and Social Justice", type: "video", link: "https://youtu.be/g8crv8fpjqI?si=XnPfGqUUpBizglN3" }
+        ]
+      },
+
+       "Class 9": {
+        "Maths": [
+          { title: "Application of Algebra", type: "video", link: "https://youtu.be/9Aam1XBm9rA?si=Eng_5ltIpbrUDIT-" },
+          { title: "Coordinate Geometry", type: "video", link: "https://youtu.be/rnYSlAQYiN4?si=bskqi8RQspF4qkMB" },
+          { title: "Linear Equations in Two Variables", type: "video", link: "https://youtu.be/K8l8Zceukco?si=O7_CsPTwggCc1qrh" },
+          { title: "Quadrilaterals", type: "video", link: "https://youtu.be/PBiw8jUzElc?si=3ytLzKs3k7xqDJc7" },
+          { title: "Surface Areas and Volume", type: "video", link: "https://youtu.be/6hOimXdeA2s?si=tD4FlcZ6Iy8W6YOV" }
+        ],
+        "Science": [
+          { title: "Motion", type: "video", link: "https://youtu.be/YshnFne48pw?si=2AwdKzf2ShxV0tJT" },
+          { title: "Work ,Energy and Power", type: "video", link: "https://youtu.be/gqyILauETxE?si=L9tWCRJ7wzlwh4Ci" },
+          { title: "Forces and Laws of Motion", type: "video", link: "https://youtu.be/ge9FxH9SEx0?si=PMFiElhZGLUYajWu" },
+          { title: "The Tissues", type: "video", link: "https://youtu.be/3nmnESU3YWc?si=KCpNs2Rnm2CtMd_P" },
+          { title: "The Reproduction in Animals", type: "video", link: "https://youtu.be/tK9Xyq70X84?si=JljfU76O7RDpRMJd" }
+        ],
+        "English": [
+          { title: "The little Girl ", type: "video", link: "https://youtu.be/n5Zyfki9wlU?si=b4irUdlnXLIabpno" },
+          { title: "The Bond of Love", type: "video", link: "https://youtu.be/0KPZUoH--Ls?si=q9BuW2XLtUmHhENm" },
+          { title: "Packing", type: "video", link: "https://youtu.be/Q0I8RfcbtN8?si=IaPQ_qxMWUxgphib" },
+          { title: "wind", type: "video", link: "https://youtu.be/WNMChNy-Ieg?si=1sMzQhS12lfsTYPc" },
+          { title: "On Killing a Tree", type: "video", link: "https://youtu.be/-zGqR4dg_OU?si=yKiad7_-JdHlH0ar" }
+        ],
+        "Hindi": [
+          { title: "The story of Two Oxen", type: "video", link: "https://youtu.be/MrmnOhK_P68?feature=shared" },
+          { title: "The Direction of Yamraj (God of Death)", type: "video", link: "https://youtu.be/kTCDk3TMYv0?si=rcvdY70PUgcEsRLY" },
+          { title: "Moonrise", type: "video", link: "https://youtu.be/IQQoprtv1RM?si=Eatgx3KOhrrnJlaC" },
+          { title: "Couplets(Dohe)", type: "video", link: "https://youtu.be/x7W068LLxis?si=bovNeQRV3HPEDmY4" },
+          { title: "Verses(pad)", type: "video", link: "https://youtu.be/hXFSKZbXvE0?si=M7CCo9aIREI1nd5k" }
+        ],
+        "SST": [
+          { title: "India- size and Location", type: "video", link: "https://youtu.be/2wX5l1ksFr8?si=GNJ2ZVy5bIDqb_l8" },
+          { title: "Physical Features of India", type: "video", link: "https://youtu.be/pi7CKZ5WKp4?si=3eLwrYscNuGPRAhi" },
+          { title: "Population and Growth", type: "video", link: "https://youtu.be/MkyqqVx7w04?si=oNBXf2eNo4OKMGWW" },
+          { title: "Climate", type: "viedo", link: "https://youtu.be/sYao9OWPsx4?si=qI9DWNpH9WXao8bp" },
+          { title: "Forest", type: "video", link: "https://youtu.be/6cdwmD6xx24?si=fJFTckvVwSpJDCyy" }
+        ]
+      },
+            "Class 10": {
+        "Maths": [
+          { title: "Trigonometry", type: "video", link: "https://www.youtube.com/live/ilNjwVgzwiU?si=NOsYvzxGQslaaMN1" },
+          { title: "Statics", type: "video", link: "https://youtu.be/G_JnER6GIz0?si=_Vu6jCqvRTHp9HhL" },
+          { title: "Cube", type: "video", link: "https://youtu.be/3nZvOWZhPjQ?si=Ow77pjTqeinjCjeH" },
+          { title: "Polynomials", type: "video", link: "https://youtu.be/kiegUjhq8Ao?si=UQqHvoH5aBELRF7v" },
+          { title: "Quadratic Equations", type: "video", link: "https://youtu.be/GtKXeWrZeuk?si=gwU5-TAQEgc9VLBP" }
+        ],
+        "Science": [
+          { title: " Chemical Reaction and Equation", type: "video", link: "https://youtu.be/VlwVXtAJwBQ?si=AdF83qAmdBNAESNJ" },
+          { title: "Life Process", type: "video", link: "https://youtu.be/X892DvPvCpQ?si=3VO42LjKZEhii8ls" },
+          { title: "Magnetic Effect of Electric Current", type: "video", link: "https://youtu.be/hUIw4H_kt50?si=IISTdVzGffj1pNnV" },
+          { title: "Metal and Non-metals", type: "video", link: "https://youtu.be/V67eJZ5YFsQ?si=OZCNzCnl5G6Bft5K" },
+          { title: "Sources of Energy", type: "video", link: "https://youtu.be/iZp2GMJ4828?si=J7daWWrCs_XYECS8" }
+        ],
+        "English": [
+          { title: "Dust of Snow", type: "video", link: "https://youtu.be/0TRLTydNf2o?si=d5v67IOb_UAXVGtc" },
+          { title: "Fire and Ice", type: "video", link: "https://youtu.be/jboE6me8n4Y?si=4qWIEYnkO-t66Cnh" },
+          { title: "A Tiger in the Zoo", type: "video", link: "https://youtu.be/jboE6me8n4Y?si=x5Zyy0Uwl1UjsDVd" },
+          { title: "Madam Rides the Bus", type: "video", link: "https://youtu.be/jJGJICYVo6Q?si=lVCVSEABM1R-dmsH" },
+          { title: "The Proposal", type: "video", link: "https://youtu.be/owj-G3ACjWw?si=IqWS5gPQH9p26CCB" }
+        ],
+        "Hindi": [
+          { title: "The Gate of the River", type: "video", link: "https://youtu.be/2otVGJ-4_J0?si=EYp5NjWdfqlVKqvz" },
+          { title: "Mother", type: "video", link: "https://youtu.be/IJaPamVpN_M?si=l2Swiq9nKtW-Qvyn" },
+          { title: "Keep Moving Forward", type: "video", link: "https://youtu.be/T9lxLOiWFyE?si=2U1dnIgJi1S1EJo-" },
+          { title: "Son of the Sun", type: "video", link: "https://youtu.be/rr9F53g6gAA?si=2CnvQKeVbsehpljB" },
+          { title: "Fight of Dreams", type: "video", link: "https://youtu.be/oAra0UcxLuY?si=nFOiY1a3hu4bP2vt" }
+        ],
+        "SST": [
+          { title: "Fundamental Rights and Duties", type: "video", link: "https://youtu.be/pwya6HULSwY?si=pI053c2jERMVJTDP" },
+          { title: "Water Resources", type: "video", link: "https://youtu.be/kEhVWVCeUTk?si=AFQWj1eA3PCqXLqT" },
+          { title: "Nationalism in India", type: "video", link: "https://youtu.be/HP1kdhvZGzc?si=RVVbbet-FiZ60iAr" },
+          { title: "Print culture and the Modern World", type: "video", link: "https://youtu.be/P1NohYYBAcQ?si=SpTXbOTIB_FfgpOk" },
+          { title: "Democracy and Diversity", type: "video", link: "https://youtu.be/O4GfrcwDF24?si=NakMEaErOIGlHbWJ" }
+        ]
+      },
+
+       "Class 11": {
+        "PCB (Medical)": [
+          { title: "Physics: Units & Measurements", type: "video", link: "https://youtu.be/tx76BJIqOd4?si=emJlf3uRNAFoMzSd" },
+          { title: "Chemistry: Atomic Structure", type: "video", link: "https://youtu.be/Oj-vA63nsBI?si=jpdBrI1kSfG3Ir7y" },
+          { title: "Biology: Cell Structure", type: "video", link: "https://youtu.be/hJi3S1haN3Y?si=gaU5aADfRQO6WOMs" },
+          { title: "Biology: Plant Kingdom", type: "video", link: "https://youtu.be/Bxe9iXiX1VQ?si=uzfHwe0qQapPOo0u" },
+          { title: "Physics: Laws of Motion", type: "video", link: "https://youtu.be/PLQ0_vZF25o?si=Gw66yQDdKha5XmVD" }
+        ],
+        "PCMB (Engineering)": [
+          { title: "Maths: Limits & Derivatives", type: "video", link: "https://youtu.be/CHWhaAlo_ms?si=d_JBL-J04sQsbrU7" },
+          { title: "Physics: Kinematics", type: "video", link: "https://youtu.be/K_a09clEnlA?si=GWEyqn_ppqvpvjel" },
+          { title: "Chemistry: Mole Concept", type: "video", link: "https://youtu.be/Tm453oQRytc?si=RjieS5OxOCZlHx9u" },
+          { title: "Maths: Trigonometry", type: "video", link: "https://youtu.be/kcSMOgFRp6w?si=sOUraayaM684FrzW" },
+          { title: "Biology: Human Physiology", type: "video", link: "https://www.youtube.com/live/8qMEmWjt7zg?si=VkRsV6UZLWmI-sYX" }
+        ],
+        "Commerce": [
+          { title: "Accountancy Basics", type: "video", link: "https://youtu.be/assW5LYrZpk?si=dixD_f74ykI-WKzO" },
+          { title: "Business Studies", type: "video", link: "https://youtu.be/yiIr8B5m3cE?si=YRDAWUJMLrOqBsV-" },
+          { title: "Economics: Introduction", type: "video", link: "https://youtu.be/IWZRQ6-RjNI?si=FYvPLl0kWKwXCEkO" },
+          { title: "Statistics", type: "video", link: "https://youtu.be/gHtUmkpPwVM?si=XtXJ8agBc4Q8RpvN" },
+          { title: "Accounting Equation", type: "video", link: "https://youtu.be/fkx36MIve3w?si=zaZAu86wDvdOR4ga" }
+        ],
+        "Arts": [
+          { title: "Nomadic Empires", type: "video", link: "https://youtu.be/wX5h1ABVkwE?si=2x3mX29uXcWP9jho" },
+          { title: "Geography Basics", type: "video", link: "https://youtu.be/uffZgunHYDM?si=qGt583PNl22IsGtH" },
+          { title: "Political Science", type: "video", link: "https://youtu.be/fjZBzexj0ZE?si=XoHYuvW37Oct2Rrr" },
+          { title: "Sociology", type: "video", link: "https://www.youtube.com/live/Nqa3fVyB76Y?si=-s99odXdWHC0RzT_" },
+          { title: "Psychology", type: "video", link: "https://youtu.be/GwBd0hbmIDM?si=9sTlxiW_KGSEHXRW" }
+        ]
+      },
+
+       "Class 12": {
+        "PCB (Medical)": [
+          { title: "Physics: Electric Charges & Fields", type: "video", link: "https://youtu.be/vvOxKA9dups?si=dYZXlBICL0IttAR2" },
+          { title: "Chemistry:Electrochemistry ", type: "video", link: "https://youtu.be/nPQ-mvIl_bQ?si=xXdoWjA4IyDykKE3" },
+          { title: "Biology:Reproduction in Organisms  ", type: "video", link: "https://www.youtube.com/live/LmRldTCcf1w?si=3b-FKpH92TVC26LO"},
+          { title: "Biology: Human Reproduction", type: "video", link: "https://youtu.be/9Pljs6Jmu_c?si=GvGUEQ9HivrMfiSG" },
+          { title: "Physics:Electromagnetic Induction ", type: "video", link: "https://youtu.be/KuvRoOi89HQ?si=5aAwbkmCS4MPeFxF" }
+        ],
+        "PCMB (Engineering)": [
+          { title: "Maths: Relations and Function", type: "video", link: "https://youtu.be/zyFucmwc2gY?si=p_WMA7BSI7ic1mBx" },
+          { title: "Maths: Application of Derivatives", type: "video", link: "https://youtu.be/QIP_4pVplU0?si=Zru0qOu_QhG55FjS" },
+          { title: "Chemistry: Chemical Kinetics", type: "video", link: "https://youtu.be/WyM1rK6QIfo?si=fcp6CVJ1-8_xERT6" },
+          { title: "Maths: Vector Algebra", type: "video", link: "https://www.youtube.com/live/MYjKs20yuCc?si=iTSLsvju-tCNDOh-" },
+          { title: "Biology: Ecosystem", type: "video", link: "https://www.youtube.com/live/KBfsnb5saKk?si=SE5GyWdHgAyi0lBV" }
+        ],
+        "Commerce": [
+          { title: "Balance of payments", type: "video", link: "https://youtu.be/ZJiCheATD5k?si=GHBdJIvwZOnDcUTT" },
+          { title: "Planning", type: "video", link: "https://youtu.be/LFXp6z6N2cE?si=xQ2Vvjn3SKzmVF2X" },
+          { title: "Organising", type: "video", link: "https://youtu.be/xJSCgC_iWOc?si=3LnpGsqexsCtIVvZ" },
+          { title: "Directing", type: "video", link: "https://youtu.be/DjLOgB0DFtc?si=2eiCU2e5lpA4wAQ1" },
+          { title: "Money and Banking", type: "video", link: "https://youtu.be/nSuRqiF0wRw?si=3gULNLyUeXD6pm-l" }
+        ],
+        "Arts": [
+          { title: "Kings, Farmers and Towns", type: "video", link: "https://youtu.be/P4x0kVYeSEs?si=lOPvBP3t6akHP24y" },
+          { title: "Bhakti-Sufi Tradition", type: "video", link: "https://www.youtube.com/live/Lx31nGtTJu8?si=fs31OvlgbosuG-1C" },
+          { title: "The End of Bipolarity", type: "video", link: "https://youtu.be/hNsHJnS6aSY?si=i4ukckj3PrXZv7hg" },
+          { title: "Globalisation", type: "video", link: "https://youtu.be/cGVXcIz_74M?si=qYZ2vaYJTP93ht5B" },
+          { title: "New Centres of Power", type: "video", link: "https://www.youtube.com/live/E2l5CAMVqas?si=Uhgc3JEx_Mj0xNak" }
+        ]
+      },
+
+      "Digital Education": {
+        "Computer Basics": [
+          { title: "Introduction to Computers", type: "video", link: "https://youtu.be/agaLaSafbwc?si=1lsF8Ui6PJN9WaMm" },
+          { title: "MS Word Basics", type: "video", link: "https://youtu.be/KCfwX98EWIc?si=kgbXKY_hW5pvP0av" }
+        ],
+        "Internet": [
+          { title: "How Internet Works", type: "video", link: "https://youtu.be/YtxLexm-9pI?si=KQfQdc2dekmMhdAi" },
+          { title: "Email & Communication", type: "video", link: "https://youtu.be/8dl4MeNjhD4?si=d6J_hno2t3_T2LcL" }
+        ]
+      }
+    };
+
+    function openClass(className) {
+      document.getElementById("modalTitle").innerText = className + " - Subjects";
+      const modalList = document.getElementById("modalList");
+      modalList.innerHTML = "";
+      Object.keys(data[className]).forEach(subject => {
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerText = subject;
+        div.onclick = () => openSubject(className, subject);
+        modalList.appendChild(div);
+      });
+      document.getElementById("mainModal").style.display = "flex";
+    }
+
+    function openSubject(className, subject) {
+      document.getElementById("modalTitle").innerText = subject + " - Lessons";
+      const modalList = document.getElementById("modalList");
+      modalList.innerHTML = "";
+      data[className][subject].forEach(lesson => {
+        let div = document.createElement("div");
+        div.className = "item";
+        if (lesson.type === "video") {
+          let videoId = lesson.link.includes("v=") 
+            ? lesson.link.split("v=")[1].split("&")[0] 
+            : lesson.link.split("/").pop();
+          div.innerHTML = `
+            🎥 <strong>${lesson.title}</strong><br>
+            ${lesson.link !== "#" ? 
+              `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>` 
+              : `<em>Video link not added yet</em>`}
+          `;
+        }
+        modalList.appendChild(div);
+      });
+    }
+
+    function closeModal() {
+      document.getElementById("mainModal").style.display = "none";
+    }
+  
+  </script>
+</body>
+</html>
