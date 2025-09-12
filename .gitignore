@@ -1,0 +1,12 @@
+# Logs
+*.log
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
+
+# Environment files (agar kabhi banaye)
+.env
