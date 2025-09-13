@@ -1,7 +1,8 @@
 [
-  { "name": "Kundan Vidya Mandir, Ludhiana", "link": "https://kvmschool.edu.in/" },
-  { "name": "Oakridge International School, Mohali", "link": "https://www.oakridge.in/mohali/" },
-  { "name": "Delhi Public School, Ludhiana", "link": "https://dpsludhiana.com/" },
-  { "name": "Yadavindra Public School, Patiala", "link": "https://ypspatiala.in/" },
-  { "name": "Army Public School, Jalandhar", "link": "https://apsjalandhar.com/" }
+  { "name": "SCD Government College Ludhiana", "link": "https://scdgovtcollege.ac.in/" },
+  { "name": "Govt. College Malerkotla", "link": "https://gcmalerkotla.in/" },
+  { "name": "Govt College Karamsar, Rara Sahib, Punjab", "link": "https://www.gckaramsar.ac.in/" },
+  { "name": "Government College Gurdaspur", "link": "https://govtcollegegurdaspur.ac.in/" },
+  { "name": "N. J. S. A. Govt. College, Kapurthala", "link": "https://gckpt.org/" },
+  { "name": "Government Rajindra College Bathinda", "link": "https://grcb.ac.in/" }
 ]
